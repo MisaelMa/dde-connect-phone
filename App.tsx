@@ -9,9 +9,22 @@ import {
 } from 'react-native';
 import RNAndroidNotificationListener from 'react-native-android-notification-listener';
 
+interface NotificationList {
+  app: string;
+  text: string;
+  title: string;
+}
+
+interface amir {
+  list: NotificationList[]
+}
+
 const App = () => {
   const [hasPermission, setHasPermission] = useState(false);
-  const [lastNotification, setLastNotification] = useState(null);
+  //const [lastNotification, setLastNotification] = useState(null);
+  const [lastNotification, setLastNotification] = useState<amir>({
+    list: [],
+  });
 
   const handleOnPressPermissionButton = async () => {
     RNAndroidNotificationListener.requestPermission();
@@ -23,9 +36,11 @@ const App = () => {
     });
   };
 
-  const handleNotificationReceived = (notification: any) => {
-    console.log(notification)
-    setLastNotification(notification);
+  const handleNotificationReceived = (notification: NotificationList) => {
+    console.log(notification);
+    setLastNotification(prevState => ({
+      list: [...prevState.list, notification],
+    }));
   };
 
   useEffect(() => {
@@ -61,12 +76,14 @@ const App = () => {
         onPress={handleOnPressPermissionButton}
       />
       {lastNotification && (
-        <View style={styles.notification}>
-          <Text style={styles.notificationTitle}>Last Notification</Text>
-          <Text>{lastNotification.app}</Text>
-          <Text>{lastNotification.title}</Text>
-          <Text>{lastNotification.text}</Text>
-        </View>
+        lastNotification.list.map(item => (
+          <View style={styles.notification}>
+            <Text style={styles.notificationTitle}>Last Notification</Text>
+            <Text>{item.app}</Text>
+            <Text>{item.title}</Text>
+            <Text>{item.text}</Text>
+          </View>
+        ))
       )}
     </SafeAreaView>
   );
