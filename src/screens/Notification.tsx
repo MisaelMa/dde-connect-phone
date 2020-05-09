@@ -1,4 +1,6 @@
 import React, {useState, useEffect} from 'react';
+import {createStackNavigator} from '@react-navigation/stack';
+import 'react-native-gesture-handler';
 import {
   SafeAreaView,
   Text,
@@ -16,10 +18,11 @@ interface NotificationList {
 }
 
 interface amir {
-  list: NotificationList[]
+  list: NotificationList[];
 }
 
-const App = () => {
+const Stack = createStackNavigator();
+const Notification = () => {
   const [hasPermission, setHasPermission] = useState(false);
   //const [lastNotification, setLastNotification] = useState(null);
   const [lastNotification, setLastNotification] = useState<amir>({
@@ -30,6 +33,7 @@ const App = () => {
     RNAndroidNotificationListener.requestPermission();
   };
 
+
   const handleAppStateChange = async () => {
     RNAndroidNotificationListener.getPermissionStatus().then((status: any) => {
       setHasPermission(status !== 'denied');
@@ -38,7 +42,7 @@ const App = () => {
 
   const handleNotificationReceived = (notification: NotificationList) => {
     console.log(notification);
-    setLastNotification(prevState => ({
+    setLastNotification((prevState) => ({
       list: [...prevState.list, notification],
     }));
   };
@@ -75,16 +79,14 @@ const App = () => {
         title={'Open Configuration'}
         onPress={handleOnPressPermissionButton}
       />
-      {lastNotification && (
-        lastNotification.list.map(item => (
-          <View style={styles.notification}>
-            <Text style={styles.notificationTitle}>Last Notification</Text>
-            <Text>{item.app}</Text>
-            <Text>{item.title}</Text>
-            <Text>{item.text}</Text>
-          </View>
-        ))
-      )}
+      {lastNotification && lastNotification.list.map((item) => (
+        <View style={styles.notification}>
+          <Text style={styles.notificationTitle}>Last Notification</Text>
+          <Text>{item.app}</Text>
+          <Text>{item.title}</Text>
+          <Text>{item.text}</Text>
+        </View>
+      ))}
     </SafeAreaView>
   );
 };
@@ -112,4 +114,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default App;
+export default Notification;
