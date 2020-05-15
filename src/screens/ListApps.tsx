@@ -23,7 +23,7 @@ interface amir {
 }
 
 const Stack = createStackNavigator();
-const Notification = () => {
+const ListApps = () => {
   const [hasPermission, setHasPermission] = useState(false);
   //const [lastNotification, setLastNotification] = useState(null);
   const [lastNotification, setLastNotification] = useState<amir>({
@@ -123,4 +123,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Notification;
+export default ListApps;

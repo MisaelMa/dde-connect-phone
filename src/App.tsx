@@ -12,10 +12,13 @@ import {createDrawerNavigator, DrawerContent} from '@react-navigation/drawer';
 
 const Drawer = createDrawerNavigator();
 import Navigator from './routes';
+import {QtSocket} from './hooks/QtSocket';
 
 export default function App() {
   const dimensions = useWindowDimensions();
   return (
-    <Navigator/>
+    <QtSocket>
+      <Navigator />
+    </QtSocket>
   );
 }

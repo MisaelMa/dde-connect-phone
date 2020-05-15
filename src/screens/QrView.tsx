@@ -10,11 +10,13 @@ import {
 } from 'react-native';
 import QRCodeScanner from 'react-native-qrcode-scanner';
 import {RNCamera} from 'react-native-camera';
+import {useDarkMode} from '../hooks/QtSocket';
 
 export function DetailsScreen() {
   const onSuccess = (e: any) => {
     console.log(e);
   };
+  const {toggleDarkMode, darkMode} = useDarkMode();
   return (
     <SafeAreaView>
       <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
@@ -34,7 +36,6 @@ export function DetailsScreen() {
             </TouchableOpacity>
           }
         />
-        <Text>Amir misael</Text>
       </View>
     </SafeAreaView>
   );
